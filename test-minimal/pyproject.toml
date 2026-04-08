@@ -1,9 +1,0 @@
-[project]
-name = "test-minimal"
-version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-requires-python = ">=3.11.14"
-dependencies = [
-    "requests>=2.33.1",
-]
