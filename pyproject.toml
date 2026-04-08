@@ -24,15 +24,16 @@ classifiers = [
 dependencies = [
     "typer>=0.9.0",
     "rich>=13.0.0",
+    "requests>=2.33.1",
 ]
 
 [project.scripts]
 arrange = "arrange.cli:app"
 
 [project.urls]
-Homepage = "https://github.com/teeon/arrange"
-Repository = "https://github.com/teeon/arrange"
-Issues = "https://github.com/teeon/arrange/issues"
+Homepage = "https://github.com/muhdaliyan/arrange"
+Repository = "https://github.com/muhdaliyan/arrange"
+Issues = "https://github.com/muhdaliyan/arrange/issues"
 
 [build-system]
 requires = ["hatchling"]
@@ -43,6 +44,11 @@ packages = ["src/arrange"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.uv.workspace]
+members = [
+    "test-scaffold",
+]
 
 [dependency-groups]
 dev = [

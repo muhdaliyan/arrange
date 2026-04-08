@@ -54,19 +54,18 @@ def print_done() -> None:
 # ── Command execution ────────────────────────────────────────────────
 
 def run(cmd: str, cwd: str | None = None, capture: bool = False, silent: bool = False) -> subprocess.CompletedProcess:
-    """Run a shell command with status output.
+    """Run a shell command with a clean status spinner.
 
     Args:
         cmd: Command string to execute.
         cwd: Working directory. Defaults to current directory.
         capture: If True, capture stdout/stderr.
-        silent: If True, suppress step output.
+        silent: If True, suppress all output (even status).
     """
-    if not silent:
-        print_step(f"Running: [dim]{cmd}[/dim]")
-
-    try:
-        result = subprocess.run(
+    msg = f"Running: [dim]{cmd}[/dim]"
+    
+    if silent:
+        return subprocess.run(
             cmd,
             shell=True,
             cwd=cwd or os.getcwd(),
@@ -74,16 +73,25 @@ def run(cmd: str, cwd: str | None = None, capture: bool = False, silent: bool = 
             text=True,
             check=True,
         )
-        if not silent:
-            print_success("Done")
-        return result
-    except subprocess.CalledProcessError as e:
-        print_error(f"Command failed: {cmd}")
-        if e.stdout:
-            console.print(f"    [dim]{e.stdout.strip()}[/dim]")
-        if e.stderr:
-            console.print(f"    [dim red]{e.stderr.strip()}[/dim red]")
-        sys.exit(1)
+
+    with console.status(f"  [cyan]▸[/cyan] {msg}", spinner="dots"):
+        try:
+            result = subprocess.run(
+                cmd,
+                shell=True,
+                cwd=cwd or os.getcwd(),
+                capture_output=True, # Always capture to keep CLI clean
+                text=True,
+                check=True,
+            )
+            return result
+        except subprocess.CalledProcessError as e:
+            print_error(f"Command failed: {cmd}")
+            if e.stdout:
+                console.print(f"    [dim]{e.stdout.strip()}[/dim]")
+            if e.stderr:
+                console.print(f"    [dim red]{e.stderr.strip()}[/dim red]")
+            sys.exit(1)
 
 
 # ── Tool checks ──────────────────────────────────────────────────────
@@ -142,13 +150,14 @@ def print_activate_hint() -> None:
     """Print how to activate the venv."""
     cmd = get_activate_command()
     console.print()
-    console.print(f"  [yellow]→[/yellow] Activate your venv:")
-    console.print(f"    [bold white]{cmd}[/bold white]")
+    console.print(f"  [green]✓[/green] Environment ready. Activate it with:")
+    console.print(f"    [bold cyan]{cmd}[/bold cyan]")
     console.print()
 
 
 def ensure_venv_exists() -> None:
-    """Check that .venv exists in the current directory."""
+    """Check that .venv exists, or create it automatically."""
     if not Path(".venv").exists():
-        print_error("No .venv found in current directory. Run 'arrange uv' first.")
-        sys.exit(1)
+        print_warning("No .venv found. Bootstrapping environment...")
+        from arrange.commands import uv
+        uv.run_command()

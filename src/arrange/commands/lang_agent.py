@@ -1,4 +1,4 @@
-"""arrange agent — LangGraph AI agent with tool stubs & Ollama config."""
+"""arrange lang-agent — LangGraph AI agent with tool stubs & Ollama config."""
 
 from arrange.utils import (
     check_uv,
@@ -125,7 +125,7 @@ OLLAMA_MODEL=llama3
 
 def run_command() -> None:
     """Scaffold a LangGraph AI agent project."""
-    print_banner("agent", "LangGraph AI agent with tool stubs & Ollama")
+    print_banner("lang-agent", "LangGraph AI agent with tool stubs & Ollama")
 
     check_uv()
     ensure_venv_exists()

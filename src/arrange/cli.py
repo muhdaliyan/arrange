@@ -6,16 +6,18 @@ from rich.console import Console
 from arrange import __version__
 from arrange.commands import (
     activate,
-    agent,
+    add,
     api,
     cli_cmd,
     django_cmd,
     docs,
+    lang_agent,
     mean,
     mern,
     ml,
     next_django,
     notebook,
+    openai_agent,
     react_fastapi,
     saas,
     scraper,
@@ -69,6 +71,12 @@ def activate_cmd() -> None:
     activate.run_command()
 
 
+@app.command(name="add")
+def add_cmd(packages: list[str]) -> None:
+    """[bold cyan]Foundation[/bold cyan] · Add packages and sync requirements.txt."""
+    add.run_command(packages)
+
+
 # ── Template commands ────────────────────────────────────────────────
 
 @app.command(name="react-fastapi")
@@ -113,10 +121,16 @@ def ml_cmd() -> None:
     ml.run_command()
 
 
-@app.command(name="agent")
-def agent_cmd() -> None:
+@app.command(name="lang-agent")
+def lang_agent_cmd() -> None:
     """[bold yellow]AI[/bold yellow] · LangGraph agent with tool stubs & Ollama config."""
-    agent.run_command()
+    lang_agent.run_command()
+
+
+@app.command(name="openai-agent")
+def openai_agent_cmd() -> None:
+    """[bold yellow]AI[/bold yellow] · Modern OpenAI agent with function calling."""
+    openai_agent.run_command()
 
 
 @app.command(name="scraper")

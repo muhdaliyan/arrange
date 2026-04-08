@@ -45,6 +45,45 @@ SAMPLE_NOTEBOOK = '''\
 }
 '''
 
+DEMO_NOTEBOOK = '''\
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": ["# Demo Notebook\\n", "\\n", "This notebook demonstrates the capabilities of your new workspace."]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\\n",
+    "import numpy as np\\n",
+    "\\n",
+    "# Create some sample data\\n",
+    "df = pd.DataFrame(np.random.randn(10, 4), columns=list('ABCD'))\\n",
+    "df.head()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python (project)",
+   "language": "python",
+   "name": "project-kernel"
+  },
+  "language_info": {
+   "name": "python",
+   "version": "3.12.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
+'''
+
 GITKEEP = ""
 
 
@@ -65,8 +104,9 @@ def run_command() -> None:
     write_file("data/raw/.gitkeep", GITKEEP)
     write_file("data/processed/.gitkeep", GITKEEP)
 
-    # Create sample notebook
+    # Create notebooks
     write_file("notebooks/exploration.ipynb", SAMPLE_NOTEBOOK)
+    write_file("notebooks/demo.ipynb", DEMO_NOTEBOOK)
 
     # Register Jupyter kernel
     project_name = os.path.basename(os.getcwd())
