@@ -137,7 +137,7 @@ Each template builds on top of `stup uv`. Run `stup uv` first, then pick your te
 ## Development
 
 ```bash
-git clone https://github.com/teeon/stup.git
+git clone https://github.com/muhdaliyan/stup.git
 cd stup
 uv venv
 uv pip install -e ".[dev]"
