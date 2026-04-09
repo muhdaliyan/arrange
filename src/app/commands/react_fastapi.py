@@ -4,9 +4,11 @@ from app.utils import (
     check_node,
     check_uv,
     create_dirs,
+    delete_dir,
     ensure_venv_exists,
     print_banner,
     print_done,
+    print_step,
     run,
     write_file,
 )
@@ -127,7 +129,11 @@ def run_command() -> None:
     run("uv run alembic init backend/alembic")
 
     # ── Frontend ─────────────────────────────────────────────────────
+    print_step("Creating React frontend with Vite...")
+    delete_dir("frontend")
     run("npx -y create-vite@latest frontend --template react")
+    
+    print_step("Installing frontend dependencies (this may take a minute)...")
     run("npm install", cwd="frontend")
     run("npm install -D tailwindcss @tailwindcss/vite", cwd="frontend")
     write_file("frontend/Dockerfile", FRONTEND_DOCKERFILE)

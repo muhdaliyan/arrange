@@ -1,6 +1,6 @@
 [project]
 name = "stup"
-version = "0.1.0"
+version = "0.1.1"
 description = "Scaffold production-ready project structures in seconds. Install once, scaffold forever."
 readme = "README.md"
 license = {text = "MIT"}

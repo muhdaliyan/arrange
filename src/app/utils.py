@@ -74,21 +74,41 @@ def run(cmd: str, cwd: str | None = None, capture: bool = False, silent: bool = 
             check=True,
         )
 
-    # Simplified status without the "Running: " preview
+    # If we are NOT capturing output, we probably want to see it (interactive)
+    # console.status messes with interactive output, so we only use it if capturing
+    if not capture and not silent:
+        try:
+            result = subprocess.run(
+                cmd,
+                shell=True,
+                cwd=cwd or os.getcwd(),
+                capture_output=False,
+                text=True,
+                check=True,
+            )
+            # Match the image: ✓ uv init
+            cmd_display = cmd.split(" --")[0]
+            console.print(f"  [green]✓[/green] {cmd_display}")
+            return result
+        except subprocess.CalledProcessError as e:
+            print_error(f"Command failed: {cmd}")
+            sys.exit(1)
+
+    # Simplified status with capture
     with console.status("", spinner="dots"):
         try:
             result = subprocess.run(
                 cmd,
                 shell=True,
                 cwd=cwd or os.getcwd(),
-                capture_output=True,
+                capture_output=capture,
                 text=True,
                 check=True,
             )
             # Match the image: ✓ uv init
-            # Extract just the main command for the display
-            cmd_display = cmd.split(" --")[0] # Strip flags for cleaner look
-            console.print(f"  [green]✓[/green] {cmd_display}")
+            cmd_display = cmd.split(" --")[0]
+            if not silent:
+                console.print(f"  [green]✓[/green] {cmd_display}")
             return result
         except subprocess.CalledProcessError as e:
             print_error(f"Command failed: {cmd}")
@@ -127,6 +147,13 @@ def create_dirs(*paths: str) -> None:
     for p in paths:
         Path(p).mkdir(parents=True, exist_ok=True)
         print_success(f"Created {p}/")
+
+
+def delete_dir(path: str) -> None:
+    """Delete a directory if it exists."""
+    p = Path(path)
+    if p.exists() and p.is_dir():
+        shutil.rmtree(p)
 
 
 def write_file(path: str, content: str) -> None:

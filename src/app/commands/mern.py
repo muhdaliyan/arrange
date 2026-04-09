@@ -3,8 +3,10 @@
 from app.utils import (
     check_node,
     create_dirs,
+    delete_dir,
     print_banner,
     print_done,
+    print_step,
     run,
     write_file,
 )
@@ -122,7 +124,11 @@ def run_command() -> None:
     write_file("server/config/db.js", SERVER_CONFIG_DB)
 
     # ── Client ───────────────────────────────────────────────────────
+    print_step("Creating React client with Vite...")
+    delete_dir("client")
     run("npx -y create-vite@latest client --template react")
+    
+    print_step("Installing client dependencies...")
     run("npm install", cwd="client")
     run("npm install react-router-dom axios", cwd="client")
 
