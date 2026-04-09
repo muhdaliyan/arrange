@@ -122,7 +122,7 @@ def run_command() -> None:
     write_file("server/config/db.js", SERVER_CONFIG_DB)
 
     # ── Client ───────────────────────────────────────────────────────
-    run("npm create vite@latest client -- --template react")
+    run("npx -y create-vite@latest client --template react")
     run("npm install", cwd="client")
     run("npm install react-router-dom axios", cwd="client")
 

@@ -127,7 +127,7 @@ def run_command() -> None:
     run("uv run alembic init backend/alembic")
 
     # ── Frontend ─────────────────────────────────────────────────────
-    run("npm create vite@latest frontend -- --template react")
+    run("npx -y create-vite@latest frontend --template react")
     run("npm install", cwd="frontend")
     run("npm install -D tailwindcss @tailwindcss/vite", cwd="frontend")
     write_file("frontend/Dockerfile", FRONTEND_DOCKERFILE)

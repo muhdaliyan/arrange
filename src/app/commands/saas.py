@@ -238,7 +238,7 @@ def run_command() -> None:
     write_file("backend/Dockerfile", BACKEND_DOCKERFILE)
 
     # ── Frontend ─────────────────────────────────────────────────────
-    run("npm create vite@latest frontend -- --template react")
+    run("npx -y create-vite@latest frontend --template react")
     run("npm install", cwd="frontend")
     run("npm install @stripe/stripe-js axios react-router-dom", cwd="frontend")
 
